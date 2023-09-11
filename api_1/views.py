@@ -5,11 +5,13 @@ from django.http import JsonResponse
 def api_endpoint(request, slack_name, track):
     # Get the current day of the week and current UTC time.
     current_day = datetime.datetime.now().strftime('%A')
-    current_utc_time = datetime.datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S')
+     # Calculate the UTC time with a +/-2 minute window.
+    current_utc_time = datetime.datetime.utcnow() + datetime.timedelta(minutes=2)
+    current_utc_time_str = current_utc_time.strftime('%Y-%m-%d %H:%M:%S')
 
     # Define the GitHub repo URL and file URL.
-    github_repo_url = 'https://github.com/your_username/your_repo'
-    github_file_url = f'{github_repo_url}/blob/master/path/to/your/file.py'
+    github_repo_url = 'https://github.com/Mutukukioko/hngxstg_stage1_api'
+    github_file_url = f'{github_repo_url}/blob/main/api_1/views.py'
 
     # Create the JSON response.
     response_data = {

@@ -1,13 +1,21 @@
 import json
 import datetime
 from django.http import JsonResponse
+from django.views.decorators.http import require_GET
 
-def api_endpoint(request, slack_name, track):
+@require_GET  # Ensure the view only accepts GET requests
+def api_endpoint(request):
+    # Get the query parameters slack_name and track from the request's GET parameters.
+    slack_name = request.GET.get('slack_name', '')
+    track = request.GET.get('track', '')
+
+    # Check if both slack_name and track parameters are provided.
+    if not slack_name or not track:
+        return JsonResponse({'error': 'Both slack_name and track parameters are required.'}, status=400)
+
     # Get the current day of the week and current UTC time.
     current_day = datetime.datetime.now().strftime('%A')
-     # Calculate the UTC time with a +/-2 minute window.
-    current_utc_time = datetime.datetime.utcnow() + datetime.timedelta(minutes=2)
-    current_utc_time_str = current_utc_time.strftime('%Y-%m-%d %H:%M:%S')
+    current_utc_time = datetime.datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S')
 
     # Define the GitHub repo URL and file URL.
     github_repo_url = 'https://github.com/Mutukukioko/hngxstg_stage1_api'

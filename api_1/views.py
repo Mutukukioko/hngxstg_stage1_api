@@ -2,11 +2,7 @@ import json
 import datetime
 from django.http import JsonResponse
 
-def api_endpoint(request):
-    # Get the query parameters slack_name and track from the request.
-    slack_name = request.GET.get('slack_name', '')
-    track = request.GET.get('track', '')
-
+def api_endpoint(request, slack_name, track):
     # Get the current day of the week and current UTC time.
     current_day = datetime.datetime.now().strftime('%A')
     current_utc_time = datetime.datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S')
